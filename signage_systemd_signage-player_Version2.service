@@ -1,0 +1,14 @@
+[Unit]
+Description=Digital Signage Player (lecteur écran principal)
+After=network.target
+
+[Service]
+User=signage
+Group=signage
+WorkingDirectory=/home/signage/digital-signage/signage/player
+Environment="PATH=/home/signage/signage-venv/bin"
+ExecStart=/usr/bin/startx /home/signage/digital-signage/signage/player/player.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

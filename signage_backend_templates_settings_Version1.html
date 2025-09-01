@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Réglages – Signage</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+</head>
+<body class="bg-gray-900 text-gray-100">
+  <nav class="bg-gray-800 p-4">
+    <a href="{{ url_for('api.dashboard') }}" class="underline">Tableau de bord</a>
+    <a href="{{ url_for('api.logout') }}" class="float-right">Déconnexion</a>
+  </nav>
+  <main class="p-4 max-w-xl mx-auto">
+    <h1 class="text-xl mb-4">Réglages</h1>
+    <form action="{{ url_for('api.save_settings') }}" method="post" class="space-y-4">
+      <div>
+        <label>Orientation écran :</label>
+        <select name="orientation" class="p-2 rounded text-gray-900">
+          <option value="landscape" {% if settings.orientation == "landscape" %}selected{% endif %}>Paysage</option>
+          <option value="portrait" {% if settings.orientation == "portrait" %}selected{% endif %}>Portrait</option>
+        </select>
+      </div>
+      <div>
+        <label>Résolution cible :</label>
+        <input type="text" name="resolution" value="{{ settings.resolution or '' }}" placeholder="ex: 1920x1080" class="p-2 rounded text-gray-900" />
+      </div>
+      <div>
+        <label>Volume global (%) :</label>
+        <input type="number" name="volume" min="0" max="100" value="{{ settings.volume or 70 }}" class="p-2 rounded text-gray-900 w-20" />
+      </div>
+      <div>
+        <label>Timeout web (sec) :</label>
+        <input type="number" name="web_timeout" min="5" max="60" value="{{ settings.web_timeout or 12 }}" class="p-2 rounded text-gray-900 w-20" />
+      </div>
+      <button class="bg-blue-600 px-3 py-2 rounded" type="submit">Enregistrer</button>
+    </form>
+  </main>
+</body>
+</html>

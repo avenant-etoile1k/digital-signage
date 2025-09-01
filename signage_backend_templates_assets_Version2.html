@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Médias – Signage</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+</head>
+<body class="bg-gray-900 text-gray-100">
+  <nav class="bg-gray-800 p-4">
+    <a href="{{ url_for('api.dashboard') }}" class="underline">Tableau de bord</a>
+    <a href="{{ url_for('api.logout') }}" class="float-right">Déconnexion</a>
+  </nav>
+  <main class="p-4">
+    <h1 class="text-xl mb-4">Médias</h1>
+    <form action="{{ url_for('api.upload_asset') }}" method="post" enctype="multipart/form-data" class="mb-6">
+      <input type="file" name="file" required />
+      <button class="bg-blue-600 px-3 py-2 rounded ml-2" type="submit">Uploader</button>
+    </form>
+    <div class="grid grid-cols-2 gap-4">
+      {% for asset in assets %}
+      <div class="bg-gray-800 rounded p-2 flex items-center">
+        <img src="{{ url_for('api.asset_thumb', filename=asset.id ~ '.jpg') }}"
+             class="w-32 h-20 object-cover rounded mr-4" alt="thumb"/>
+        <div class="flex-1">
+          <div><b>{{ asset.original_name }}</b> ({{ asset.type }})</div>
+          <div class="text-sm text-gray-400">{{ asset.size_bytes // 1024 }} Ko</div>
+        </div>
+        <form action="{{ url_for('api.delete_asset', asset_id=asset.id) }}" method="post" class="ml-2">
+          <button class="text-red-400" type="submit">Suppr</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+</body>
+</html>

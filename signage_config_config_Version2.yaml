@@ -1,0 +1,17 @@
+# Fichier de configuration Digital Signage (modifiez selon vos besoins)
+
+media_dir: /home/signage/digital-signage/media
+thumb_dir: /home/signage/digital-signage/thumbs
+log_dir: /home/signage/digital-signage/logs
+
+default_orientation: landscape   # 'landscape' ou 'portrait'
+default_volume: 70              # 0–100
+default_resolution: 1920x1080
+web_timeout_sec: 12
+max_upload_size_mb: 250
+whitelist_exts: [".jpg", ".jpeg", ".png", ".webp", ".mp4", ".mkv", ".mp3", ".aac", ".wav"]
+lang: fr
+
+watch_folder: /home/signage/digital-signage/watch
+quota_mb: 12000   # 12Go
+log_level: INFO

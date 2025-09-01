@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Connexion – Signage</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+</head>
+<body class="bg-gray-900 flex items-center justify-center h-screen">
+  <form method="post" class="bg-gray-800 p-8 rounded shadow-lg">
+    <h2 class="text-xl mb-4">Connexion</h2>
+    <label>Utilisateur
+      <input type="text" name="username" required class="block w-full mb-3 p-2 rounded" />
+    </label>
+    <label>Mot de passe
+      <input type="password" name="password" required class="block w-full mb-4 p-2 rounded" />
+    </label>
+    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" type="submit">Se connecter</button>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="text-red-400 mt-2">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+  </form>
+</body>
+</html>

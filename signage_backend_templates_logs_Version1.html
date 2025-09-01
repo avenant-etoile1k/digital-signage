@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Logs & Santé – Signage</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+</head>
+<body class="bg-gray-900 text-gray-100">
+  <nav class="bg-gray-800 p-4">
+    <a href="{{ url_for('api.dashboard') }}" class="underline">Tableau de bord</a>
+    <a href="{{ url_for('api.logout') }}" class="float-right">Déconnexion</a>
+  </nav>
+  <main class="p-4">
+    <h1 class="text-xl mb-4">Logs & Santé</h1>
+    <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-gray-800 rounded p-4">
+        <h2 class="text-lg mb-2">Santé système</h2>
+        <p>Uptime : <span class="font-mono">{{ health.uptime }}</span></p>
+        <p>Température CPU : <span class="font-mono">{{ health.cpu_temp }}°C</span></p>
+        <p>Espace disque : <span class="font-mono">{{ health.disk_free }} / {{ health.disk_total }}</span></p>
+        <p>Version backend : <span class="font-mono">{{ health.version }}</span></p>
+      </div>
+      <div class="bg-gray-800 rounded p-4">
+        <h2 class="text-lg mb-2">Résumé des logs récents</h2>
+        <ul class="max-h-48 overflow-y-auto">
+          {% for event in logs %}
+          <li class="border-b border-gray-700 py-1">
+            <span class="text-xs text-gray-400">{{ event.ts.strftime('%d/%m %H:%M:%S') }}</span>
+            <span class="text-{{ 'green' if event.level=='INFO' else 'yellow' if event.level=='WARN' else 'red' }}-400 ml-1">{{ event.level }}</span>
+            <span class="ml-2 font-bold">{{ event.source }}</span> :
+            <span>{{ event.message }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <form action="{{ url_for('api.clear_logs') }}" method="post">
+      <button class="bg-red-600 px-3 py-2 rounded" type="submit" onclick="return confirm('Vider les logs ?')">Vider les logs</button>
+    </form>
+  </main>
+</body>
+</html>

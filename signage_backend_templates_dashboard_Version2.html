@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Signage – Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+</head>
+<body class="bg-gray-900 text-gray-100">
+  <nav class="bg-gray-800 p-4">
+    <span class="font-bold">Digital Signage</span>
+    <a href="{{ url_for('api.logout') }}" class="float-right">Déconnexion</a>
+  </nav>
+  <main class="p-4">
+    <h1 class="text-2xl mb-4">Tableau de bord</h1>
+    <!-- Statut du player, prochain média, logs récents -->
+    <div>
+      <a href="{{ url_for('api.list_assets') }}" class="underline">Médias</a> |
+      <a href="{{ url_for('api.dashboard') }}" class="underline">Playlists</a> |
+      <a href="#" class="underline">Planification</a> |
+      <a href="#" class="underline">Réglages</a> |
+      <a href="#" class="underline">Logs & Santé</a>
+    </div>
+    <div class="mt-6">
+      <!-- Aperçu du prochain slot, logs -->
+      <p>Statut du player : <span class="text-green-400">OK</span></p>
+      <p>Prochain média : <em>À venir</em></p>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,4 @@
+/* Tailwind CSS build - pas de CDN, à builder localement */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

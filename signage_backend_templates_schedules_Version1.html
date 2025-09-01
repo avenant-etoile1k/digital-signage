@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Planification – Signage</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+</head>
+<body class="bg-gray-900 text-gray-100">
+  <nav class="bg-gray-800 p-4">
+    <a href="{{ url_for('api.dashboard') }}" class="underline">Tableau de bord</a>
+    <a href="{{ url_for('api.logout') }}" class="float-right">Déconnexion</a>
+  </nav>
+  <main class="p-4">
+    <h1 class="text-xl mb-4">Planification des playlists</h1>
+    <form action="{{ url_for('api.create_schedule') }}" method="post" class="mb-6 grid grid-cols-6 gap-2 items-end">
+      <select name="playlist_id" class="p-2 rounded text-gray-900 col-span-1" required>
+        {% for playlist in playlists %}
+          <option value="{{ playlist.id }}">{{ playlist.name }}</option>
+        {% endfor %}
+      </select>
+      <input type="datetime-local" name="start_datetime" class="p-2 rounded text-gray-900 col-span-1" required />
+      <input type="datetime-local" name="end_datetime" class="p-2 rounded text-gray-900 col-span-1" required />
+      <div class="col-span-2 flex gap-2">
+        {% for day in ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"] %}
+          <label><input type="checkbox" name="days_of_week" value="{{ loop.index0 }}" /> {{ day }}</label>
+        {% endfor %}
+      </div>
+      <input type="number" name="priority" min="1" value="1" class="p-2 rounded text-gray-900 col-span-1 w-20" />
+      <button class="bg-blue-600 px-3 py-2 rounded" type="submit">Planifier</button>
+    </form>
+    <div class="grid grid-cols-1 gap-4">
+      {% for sched in schedules %}
+      <div class="bg-gray-800 rounded p-4 flex items-center">
+        <span class="font-bold mr-2">{{ sched.playlist.name }}</span>
+        <span class="text-xs text-gray-400 mr-2">
+          Du {{ sched.start_datetime.strftime('%d/%m %H:%M') }} au {{ sched.end_datetime.strftime('%d/%m %H:%M') }}
+        </span>
+        <span class="text-xs text-gray-300 mr-2">
+          Jours :
+          {% for i in range(7) %}
+            {% if sched.days_of_week & (1 << i) %}{{ ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"][i] }} {% endif %}
+          {% endfor %}
+        </span>
+        <span class="text-xs mr-2">Prio {{ sched.priority }}</span>
+        <span class="text-xs {% if sched.enabled %}text-green-400{% else %}text-red-400{% endif %}">
+          {% if sched.enabled %}Activé{% else %}Désactivé{% endif %}
+        </span>
+        <form action="{{ url_for('api.delete_schedule', schedule_id=sched.id) }}" method="post" class="ml-auto">
+          <button class="text-red-400" type="submit" onclick="return confirm('Supprimer ce créneau ?')">Suppr</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+</body>
+</html>
